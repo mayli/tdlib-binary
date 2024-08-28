@@ -19,10 +19,10 @@ jobs:
     strategy:
       matrix:
         # macos-13 is an intel runner, macos-14 is apple silicon
-        os: [ubuntu-latest, macos-13, macos-14]
+        os: [ubuntu-latest, windows-latest, macos-13, macos-14]
     env:
       CIBW_ARCHS_LINUX: auto64,aarch64
-      CIBW_BUILD: cp36* cp39-macosx_arm64
+      CIBW_BUILD: cp37* cp39-macosx_arm64
     
     steps:
       - uses: actions/checkout@v4
@@ -49,9 +49,7 @@ jobs:
 
           # Install zlib using vcpkg
           ./vcpkg install zlib
-
-          # Optionally add vcpkg to PATH
-          $env:PATH += ";C:\vcpkg\installed\x64-windows\bin"
+          echo "set(CMAKE_TOOLCHAIN_FILE=$GITHUB_WORKSPACE/vcpkg/scripts/buildsystems/vcpkg.cmake)" >> $GITHUB_ENV
 
       - name: Build wheels
         uses: pypa/cibuildwheel@v2.20.0
