@@ -25,9 +25,6 @@ jobs:
       CIBW_BUILD: cp37* cp39-macosx_arm64
     
     steps:
-      - uses: actions/checkout@v4
-        with:
-          submodules: recursive
       - name: Set up QEMU
         if: runner.os == 'Linux'
         uses: docker/setup-qemu-action@v1
@@ -49,7 +46,14 @@ jobs:
           # Install zlib using vcpkg
           ./vcpkg install zlib
           echo "set(CMAKE_TOOLCHAIN_FILE=$GITHUB_WORKSPACE/vcpkg/scripts/buildsystems/vcpkg.cmake)" >> $GITHUB_ENV
+      - name: Setup PHP
+        id: setup-php
+        uses: shivammathur/setup-php@v2
       
+      - uses: actions/checkout@v4
+        with:
+          submodules: recursive
+
       - name: Split sources
         run: cd tdlight && php SplitSource.php
 
