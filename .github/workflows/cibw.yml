@@ -34,7 +34,6 @@ jobs:
         uses: docker/setup-qemu-action@v1
         with:
           platforms: arm64
-            - name: Install dependencies
       - name: Set up windows
         if: runner.os == 'Windows'
         run: |
