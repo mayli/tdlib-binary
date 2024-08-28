@@ -1,0 +1,6 @@
+[build-system]
+requires = ["setuptools", "wheel"]
+build-backend = "setuptools.build_meta"
+
+[tool.cibuildwheel.linux]
+before-all = "yum install -y gperf openssl-devel || apk add --upgrade gperf openssl-dev || apt-get install gperf libssl-dev"

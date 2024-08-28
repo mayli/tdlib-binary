@@ -1,0 +1,3 @@
+[submodule "tdlight"]
+	path = tdlight
+	url = https://github.com/tdlight-team/tdlight.git

@@ -1,0 +1,97 @@
+name: Build
+
+on:
+  workflow_dispatch:
+    inputs:
+      publish:
+        description: Write 'PUBLISH' to publish to pypi.
+      publish_test:
+        description: Write 'PUBLISH_TEST' to publish to pypi.
+  push:
+  pull_request:
+  release:
+    types: [published]
+
+jobs:
+  generate-wheels-matrix:
+    name: Generate wheels matrix
+    runs-on: ubuntu-latest
+    outputs:
+      include: ${{ steps.set-matrix.outputs.include }}
+    steps:
+      - uses: actions/checkout@v3
+      - name: Install cibuildwheel
+        run: pipx install cibuildwheel==2.20.0
+      - id: set-matrix
+        run: |
+          MATRIX=$(
+            {
+              cibuildwheel --print-build-identifiers --platform linux \
+              | jq -nRc '{"only": inputs, "os": "ubuntu-latest"}'
+            } | jq -sc
+          )
+          echo "include=$MATRIX" >> $GITHUB_OUTPUT          
+    env:
+      CIBW_ARCHS_LINUX: auto64,aarch64
+      CIBW_SKIP: pp* cp36* cp37*
+  build_wheels:
+    name: Build ${{ matrix.only }}
+    needs: generate-wheels-matrix
+    strategy:
+      matrix:
+        include: ${{ fromJson(needs.generate-wheels-matrix.outputs.include) }}
+    runs-on: ${{ matrix.os }}
+    
+    steps:
+      - uses: actions/checkout@v4
+      
+      - name: Set up QEMU
+        uses: docker/setup-qemu-action@v1
+        with:
+          platforms: arm64
+
+      - name: Build wheels
+        uses: pypa/cibuildwheel@v2.20.0
+        env:
+          CIBW_BUILD_VERBOSITY: 1
+        with:
+          only: ${{ matrix.only }}
+
+      - uses: actions/upload-artifact@v4
+        with:
+          name: cibw-wheels-${{ matrix.os }}-${{ strategy.job-index }}
+          path: ./wheelhouse/*.whl
+  upload_all:
+    needs: build_wheels
+    environment: pypi
+    permissions:
+      id-token: write
+    runs-on: ubuntu-latest
+    if: needs.build_wheels.result == 'success' && github.event.inputs.publish == 'PUBLISH'
+    steps:
+    - uses: actions/download-artifact@v4
+      with:
+        pattern: cibw-*
+        path: dist
+        merge-multiple: true
+
+    - uses: pypa/gh-action-pypi-publish@release/v1
+  upload_pypi_test:
+    needs: build_wheels
+    environment: pypitest
+    permissions:
+      id-token: write
+    runs-on: ubuntu-latest
+    if: needs.build_wheels.result == 'success' && github.event.inputs.publish_test == 'PUBLISH_TEST'
+
+    steps:
+    - uses: actions/download-artifact@v4
+      with:
+        pattern: cibw-*
+        path: dist
+        merge-multiple: true
+
+    - uses: pypa/gh-action-pypi-publish@release/v1
+      with:
+        skip_existing: true
+        repository_url: https://test.pypi.org/legacy/
