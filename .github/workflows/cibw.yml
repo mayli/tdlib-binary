@@ -28,7 +28,6 @@ jobs:
       - uses: actions/checkout@v4
         with:
           submodules: recursive
-      
       - name: Set up QEMU
         if: runner.os == 'Linux'
         uses: docker/setup-qemu-action@v1
@@ -50,6 +49,9 @@ jobs:
           # Install zlib using vcpkg
           ./vcpkg install zlib
           echo "set(CMAKE_TOOLCHAIN_FILE=$GITHUB_WORKSPACE/vcpkg/scripts/buildsystems/vcpkg.cmake)" >> $GITHUB_ENV
+      
+      - name: Split sources
+        run: cd tdlight && php SplitSource.php
 
       - name: Build wheels
         uses: pypa/cibuildwheel@v2.20.0
