@@ -33,7 +33,7 @@ jobs:
           echo "include=$MATRIX" >> $GITHUB_OUTPUT          
     env:
       CIBW_ARCHS_LINUX: auto64,aarch64
-      CIBW_SKIP: pp* cp36* cp37*
+      CIBW_BUILD: cp36*
   build_wheels:
     name: Build ${{ matrix.only }}
     needs: generate-wheels-matrix
