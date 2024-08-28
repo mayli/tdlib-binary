@@ -7,7 +7,7 @@ from subprocess import check_call
 
 from setuptools.command.build_ext import build_ext as build_ext_orig
 
-EXTRA = '-DCMAKE_TOOLCHAIN_FILE=../vcpkg/scripts/buildsystems/vcpkg.cmake'
+EXTRA = '-DCMAKE_TOOLCHAIN_FILE=%s/vcpkg/scripts/buildsystems/vcpkg.cmake' % os.environ["GITHUB_WORKSPACE"]
 
 def get_version():
     # project(TDLib VERSION 1.8.35 LANGUAGES CXX C)
