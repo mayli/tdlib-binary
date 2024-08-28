@@ -34,6 +34,15 @@ jobs:
         uses: docker/setup-qemu-action@v1
         with:
           platforms: arm64
+            - name: Install dependencies
+      - name: Set up windows
+        if: runner.os == 'Windows'
+        run: |
+          # Install Chocolatey if not already installed
+          @powershell -Command "Start-Process cmd.exe -ArgumentList '/c', 'choco install -y zlib gperf' -NoNewWindow -Wait"
+
+          # Optional: update PATH for tools installed by Chocolatey
+          echo "##vso[task.prependpath]C:\\ProgramData\\chocolatey\\bin"
 
       - name: Build wheels
         uses: pypa/cibuildwheel@v2.20.0
