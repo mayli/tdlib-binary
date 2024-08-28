@@ -31,7 +31,7 @@ class build_ext(build_ext_orig):
         target = Path(self.build_lib) / "tdlib" / "libtdjson.so"
 
         check_call("cmake -DCMAKE_BUILD_TYPE=Release ../tdlight", cwd=prefix, shell=True)
-        check_call("cmake --build . -j $(nproc)", cwd=prefix, shell=True)
+        check_call("cmake --build . -j $(nproc) --target tdjson", cwd=prefix, shell=True)
 
         src = prefix / 'libtdjson.so'
         shutil.copy(src, target, follow_symlinks=True)
