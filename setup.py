@@ -7,6 +7,8 @@ from subprocess import check_call
 
 from setuptools.command.build_ext import build_ext as build_ext_orig
 
+EXTRA = '-DCMAKE_TOOLCHAIN_FILE=../vcpkg/scripts/buildsystems/vcpkg.cmake'
+
 def get_version():
     # project(TDLib VERSION 1.8.35 LANGUAGES CXX C)
     with open('tdlight/CMakeLists.txt') as fd:
@@ -30,7 +32,9 @@ class build_ext(build_ext_orig):
         prefix.mkdir(exist_ok=True)
         target = Path(self.build_lib) / "tdlib" / "libtdjson.so"
 
-        check_call("cmake -DCMAKE_BUILD_TYPE=Release ../tdlight", cwd=prefix, shell=True)
+        extra = EXTRA if os.name == 'nt' else ''
+
+        check_call(f"cmake -DCMAKE_BUILD_TYPE=Release ../tdlight {extra}", cwd=prefix, shell=True)
         check_call("cmake --build . -j $(nproc) --target tdjson", cwd=prefix, shell=True)
 
         src = prefix / 'libtdjson.so'
