@@ -38,8 +38,7 @@ jobs:
         if: runner.os == 'Windows'
         run: |
           # Install Chocolatey if not already installed
-          @powershell -Command "Start-Process cmd.exe -ArgumentList '/c', 'choco install -y zlib gperf' -NoNewWindow -Wait"
-
+          choco install -y zlib gperf
           # Optional: update PATH for tools installed by Chocolatey
           echo "##vso[task.prependpath]C:\\ProgramData\\chocolatey\\bin"
 
