@@ -47,6 +47,7 @@ jobs:
           # ./vcpkg install zlib
           # echo "set(CMAKE_TOOLCHAIN_FILE=$GITHUB_WORKSPACE/vcpkg/scripts/buildsystems/vcpkg.cmake)" >> $GITHUB_ENV
       - name: vcpkg build
+        if: runner.os == 'Windows'
         uses: johnwason/vcpkg-action@v6
         id: vcpkg
         with:
