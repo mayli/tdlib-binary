@@ -46,16 +46,17 @@ jobs:
           # Install zlib using vcpkg
           ./vcpkg install zlib
           echo "set(CMAKE_TOOLCHAIN_FILE=$GITHUB_WORKSPACE/vcpkg/scripts/buildsystems/vcpkg.cmake)" >> $GITHUB_ENV
-      - name: Setup PHP
-        id: setup-php
-        uses: shivammathur/setup-php@v2
+
+      # - name: Setup PHP
+      #   id: setup-php
+      #   uses: shivammathur/setup-php@v2
+      # - name: Split sources
+      #   run: cd tdlight && php SplitSource.php
       
       - uses: actions/checkout@v4
         with:
           submodules: recursive
 
-      - name: Split sources
-        run: cd tdlight && php SplitSource.php
 
       - name: Build wheels
         uses: pypa/cibuildwheel@v2.20.0
