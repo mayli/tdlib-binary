@@ -56,7 +56,7 @@ setup(
         "bdist_wheel": bdist_wheel_abi3,
     },
     package_data={
-        "tdlib": ["tdjson.so", "tdjson.dll", "libtdjson.dylib"],
+        "tdlib": ["lib/*"],
     },
     install_requires=[
         'importlib-resources>=1.3; python_version < "3.9"',
