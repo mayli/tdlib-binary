@@ -56,19 +56,6 @@ jobs:
         uses: lukka/run-vcpkg@v11
         if: runner.os == 'Windows'
 
-      - name: Copy files
-        if: runner.os == 'Windows'
-        run: |
-          cp CMakePresets.json tdlight/
-
-      - name: build with cmake
-        uses: lukka/run-cmake@v10
-        if: runner.os == 'Windows'
-        with:
-          cmakeListsTxtPath: '${{ github.workspace }}/tdlight/CMakeLists.txt'
-          configurePreset: 'release-vcpkg'
-          buildPreset: 'release-vcpkg'
-
       - name: Build wheels
         uses: pypa/cibuildwheel@v2.20.0
         env:
