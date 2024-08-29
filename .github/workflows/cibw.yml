@@ -54,16 +54,16 @@ jobs:
           echo "##vso[task.prependpath]C:\\ProgramData\\chocolatey\\bin"
 
       - uses: lukka/get-cmake@latest
-        if: runner.os == 'macOS' || runner.os == 'Windows'
+        if: runner.os == 'Windows'
 
       - name: Restore from cache and setup vcpkg executable and data files.
-        if: runner.os == 'macOS' || runner.os == 'Windows'
+        if: runner.os == 'Windows'
         uses: lukka/run-vcpkg@v11
         with:
           vcpkgJsonGlob: 'vcpkg.json'
 
       - name: Run CMake+vcpkg+Ninja to build packages and generate/build the code.
-        if: runner.os == 'macOS' || runner.os == 'Windows'
+        if: runner.os == 'Windows'
         uses: lukka/run-cmake@v10
         with:
           cmakeListsTxtPath: '${{ github.workspace }}/tdlight/CMakeLists.txt'
