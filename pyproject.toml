@@ -1,12 +1,12 @@
 [build-system]
-requires = ["setuptools", "wheel", "sccache"]
+requires = ["setuptools", "wheel"]
 build-backend = "setuptools.build_meta"
 
 [tool.cibuildwheel]
 environment = { CMAKE_C_COMPILER_LAUNCHER="sccache", CMAKE_CXX_COMPILER_LAUNCHER="sccache", SCCACHE_GHA_ENABLED="true", CMAKE_GENERATOR="Ninja"}
 # Run the package tests using `pytest`
 test-command = "python {package}/tests/client_test.py"
-before-build = "cmake --install build/ --prefix tdlib/ --component tdjson"
+before-build = ["cmake --install build/ --prefix tdlib/ --component tdjson", "find tdlib"]
 
 [tool.cibuildwheel.linux]
 environment-pass = ["ACTIONS_CACHE_URL", "ACTIONS_RUNTIME_TOKEN"]
