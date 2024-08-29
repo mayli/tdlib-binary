@@ -24,6 +24,7 @@ jobs:
     env:
       CIBW_ARCHS_LINUX: auto64,aarch64
       CIBW_BUILD: cp36* cp39-macosx_arm64
+      CIBW_SKIP: *musl*
 
     steps:
       - name: Set up QEMU
