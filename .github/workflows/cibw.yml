@@ -56,6 +56,11 @@ jobs:
         uses: lukka/run-vcpkg@v11
         if: runner.os == 'Windows'
 
+      - name: Setup macos-14
+        if: runner.name == 'macos-14'
+          run |
+          echo "MACOSX_DEPLOYMENT_TARGET=14.0" >> $GITHUB_ENV
+
       - name: Build wheels
         uses: pypa/cibuildwheel@v2.20.0
         env:
