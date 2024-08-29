@@ -21,7 +21,6 @@ before-all = [
 environment = { CMAKE_C_COMPILER_LAUNCHER="sccache", CMAKE_CXX_COMPILER_LAUNCHER="sccache", CMAKE_BUILD_TYPE="Release"}
 before-all = [
   "vcpkg list",
-  "cmake --build build --target tdjson",
 ]
 
 # "cmake -S tdlight -B build -DCMAKE_TOOLCHAIN_FILE=D:/a/tdlib-binary/tdlib-binary/vcpkg/scripts/buildsystems/vcpkg.cmake",
