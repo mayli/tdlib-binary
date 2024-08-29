@@ -69,7 +69,7 @@ jobs:
           md build
           cd build
           cmake ${{ steps.vcpkg.outputs.vcpkg-cmake-config }} -DCMAKE_BUILD_TYPE=Release ../tdlight
-          cmake -j $(nproc) --target tdjson
+          cmake -j 4 --target tdjson .
 
       # - name: Setup PHP
       #   id: setup-php
