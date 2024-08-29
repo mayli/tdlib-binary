@@ -42,9 +42,6 @@ jobs:
         run: |
           echo "SCCACHE_GHA_ENABLED=true" >> $GITHUB_ENV
 
-      - uses: seanmiddleditch/gha-setup-ninja@master
-        if: runner.os == 'Macos' || runner.os == 'Windows'
-
       - name: Set up windows - gperf
         if: runner.os == 'Windows'
         shell: pwsh
@@ -52,16 +49,25 @@ jobs:
           choco install -y gperf
           echo "##vso[task.prependpath]C:\\ProgramData\\chocolatey\\bin"
 
-      - name: Setup vcpkg
-        uses: lukka/run-vcpkg@v11
-        if: runner.os == 'Windows'
-        with:
-          runVcpkgInstall: true
+      - uses: lukka/get-cmake@latest
 
-      - name: Set up windows - cmake
+      - name: Restore from cache and setup vcpkg executable and data files.
+        if: runner.os == 'Windows'
+        uses: lukka/run-vcpkg@v11
+        with:
+          vcpkgJsonGlob: 'vcpkg.json'
+
+      - name: Run CMake+vcpkg+Ninja+CTest to build packages and generate/build the code.
+        uses: lukka/run-cmake@v10
+        with:
+          cmakeListsTxtPath: '${{ github.workspace }}/tdlight/CMakeLists.txt'
+          configurePreset: 'ninja-multi-vcpkg'
+          buildPreset: 'ninja-vcpkg-release'
+
+      - name: run cmake - windows
         if: runner.os == 'Windows'
         run: |
-          cmake -G Ninja -DCMAKE_TOOLCHAIN_FILE=${{ github.workspace }}/vcpkg/scripts/buildsystems/vcpkg.cmake -S tdlight -B build
+          cmake --preset ninja-multi-vcpkg -S tdlight -B build
 
       - name: Setup macos
         if: runner.os == 'macOS'
