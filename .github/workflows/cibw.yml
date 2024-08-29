@@ -68,9 +68,8 @@ jobs:
           dir
           md build
           cd build
-          cmake -DCMAKE_BUILD_TYPE=Release ../tdlight
+          cmake ${{ steps.vcpkg.outputs.vcpkg-cmake-config }} -DCMAKE_BUILD_TYPE=Release ../tdlight
           cmake --build . -j 4 --target tdjson
-          # cmake ${{ steps.vcpkg.outputs.vcpkg-cmake-config }} -DCMAKE_BUILD_TYPE=Release ../tdlight
       - name: Build wheels
         uses: pypa/cibuildwheel@v2.20.0
         env:
