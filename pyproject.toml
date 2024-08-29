@@ -19,7 +19,6 @@ before-all = [
 ]
 [tool.cibuildwheel.windows]
 before-all = [
-  "vcpkg install",
   "cmake -DCMAKE_BUILD_TYPE=Release -DCMAKE_TOOLCHAIN_FILE=${{ VCPKG_ROOT }}/scripts/buildsystems/vcpkg.cmake -S tdlight -B build ",
   "cmake --build build --target tdjson",
 ]

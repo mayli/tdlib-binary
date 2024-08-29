@@ -55,6 +55,8 @@ jobs:
       - name: Setup vcpkg
         uses: lukka/run-vcpkg@v11
         if: runner.os == 'Windows'
+        with:
+          runVcpkgInstall: true
 
       - name: Setup macos-14
         if: runner.name == 'macos-14'
