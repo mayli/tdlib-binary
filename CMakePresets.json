@@ -1,37 +1,38 @@
 {
-  "version": 2,
+  "version": 3,
+  "cmakeMinimumRequired": {
+    "major": 3,
+    "minor": 19,
+    "patch": 0
+  },
   "configurePresets": [
     {
-      "name": "release",
+      "name": "default",
+      "hidden": true,
       "generator": "Ninja",
-      "binaryDir": "build/release",
+      "binaryDir": "${sourceDir}/out/build/${presetName}",
       "cacheVariables": {
-        "CMAKE_C_COMPILER_LAUNCHER": "sccache",
-        "CMAKE_CXX_COMPILER_LAUNCHER": "sccache"
+        "CMAKE_EXPORT_COMPILE_COMMANDS": "YES"
       }
     },
     {
-      "name": "release-vcpkg",
-      "inherits": "release",
+      "name": "default-subdir",
+      "inherits": "default",
+      "description": "Default build preset for subdir",
+      "generator": "Ninja",
+      "binaryDir": "${sourceDir}/tdlight/out/build/${presetName}",
+      "generator": "Ninja",
       "cacheVariables": {
-        "CMAKE_BUILD_TYPE": "Release",
-	"CMAKE_TOOLCHAIN_FILE": {
-          "type": "FILEPATH",
-          "value": "$env{VCPKG_ROOT}/scripts/buildsystems/vcpkg.cmake"
-        }
+        "CMAKE_BUILD_TYPE": "Release"
       }
     }
   ],
   "buildPresets": [
     {
-     "name": "release",
-     "configurePreset": "release",
-     "targets": "tdjson"
-    },
-    {
-     "name": "release-vcpkg",
-     "inherits": "release",
-     "configurePreset": "release-vcpkg"
+      "name": "default-build-subdir",
+      "configurePreset": "default-subdir",
+      "description": "Build preset for subdir"
     }
   ]
 }
+

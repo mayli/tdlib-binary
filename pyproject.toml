@@ -1,13 +1,23 @@
 [build-system]
-requires = ["setuptools", "wheel"]
+requires = ["setuptools", "wheel", "sccache"]
 build-backend = "setuptools.build_meta"
 
 [tool.cibuildwheel]
+environment = {
+	CMAKE_C_COMPILER_LAUNCHER="sccache",
+	CMAKE_CXX_COMPILER_LAUNCHER="sccache",
+	SCCACHE_GHA_ENABLED="true"
+}
 before-all = [
-  "pip install sccache"
+  "cmake --preset default-subdir"
 ]
 # Run the package tests using `pytest`
 test-command = "python {package}/tests/client_test.py"
 
 [tool.cibuildwheel.linux]
-before-all = "yum install -y gperf openssl-devel || apk add --upgrade gperf openssl-dev || apt-get install gperf libssl-dev"
+before-all = [
+  "yum install -y gperf openssl-devel || apk add --upgrade gperf openssl-dev || apt-get install gperf libssl-dev",
+  "pip install sccache",
+  "cmake -DCMAKE_BUILD_TYPE=Release -S tdlight -B build",
+  "cmake --build build --target tdjson",
+]
