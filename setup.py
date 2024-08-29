@@ -32,7 +32,11 @@ class bdist_wheel_abi3(bdist_wheel):
 
 class build_ext(build_ext_orig):
     def run(self):
-        pass
+        for f in Path('tdlib/lib/*'):
+            if f.is_symlink():
+                src = f.readlink()
+                f.unlink()
+                src.rename(f)
 
 
 def read_readme():
