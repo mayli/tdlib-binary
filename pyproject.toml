@@ -4,11 +4,9 @@ build-backend = "setuptools.build_meta"
 
 [tool.cibuildwheel]
 environment = { CMAKE_C_COMPILER_LAUNCHER="sccache", CMAKE_CXX_COMPILER_LAUNCHER="sccache", SCCACHE_GHA_ENABLED="true" }
-before-all = [
-  "cmake --preset default-subdir"
-]
 # Run the package tests using `pytest`
 test-command = "python {package}/tests/client_test.py"
+before-build = "cp build/tdjson.so build/tdjson.dll build/libtdjson.dylib tdlib/"
 
 [tool.cibuildwheel.linux]
 environment-pass = ["ACTIONS_CACHE_URL", "ACTIONS_RUNTIME_TOKEN"]
@@ -16,5 +14,11 @@ before-all = [
   "yum install -y gperf openssl-devel || apk add --upgrade gperf openssl-dev || apt-get install gperf libssl-dev",
   "pip install sccache",
   "cmake -DCMAKE_BUILD_TYPE=Release -S tdlight -B build",
-  "cmake --build build --target tdjson",
+  "cmake --build build --target tdjson -j $(nproc)",
+]
+[tool.cibuildwheel.windows]
+[tool.cibuildwheel.macos]
+before-all = [
+  "cmake -DCMAKE_BUILD_TYPE=Release -S tdlight -B build",
+  "cmake --build build --target tdjson -j $(nproc)",
 ]
