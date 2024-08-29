@@ -41,8 +41,6 @@ jobs:
       - name: 
         run: |
           echo "SCCACHE_GHA_ENABLED=true" >> $GITHUB_ENV
-          echo "CMAKE_C_COMPILER_LAUNCHER=sccache" >> $GITHUB_ENV
-          echo "CMAKE_CXX_COMPILER_LAUNCHER=sccache" >> $GITHUB_ENV
 
       - name: Set up windows - gperf
         if: runner.os == 'Windows'

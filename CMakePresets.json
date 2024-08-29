@@ -4,7 +4,11 @@
     {
       "name": "release",
       "generator": "Ninja",
-      "binaryDir": "build/release"
+      "binaryDir": "build/release",
+      "cacheVariables": {
+        "CMAKE_C_COMPILER_LAUNCHER": "sccache",
+        "CMAKE_CXX_COMPILER_LAUNCHER": "sccache"
+      }
     },
     {
       "name": "release-vcpkg",
