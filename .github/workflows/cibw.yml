@@ -58,12 +58,12 @@ jobs:
 
       - name: Setup macos-14
         if: runner.name == 'macos-14'
-          run |
+        run: |
           echo "MACOSX_DEPLOYMENT_TARGET=14.0" >> $GITHUB_ENV
 
       - name: Setup macos-13
         if: runner.name == 'macos-13'
-          run |
+        run: |
           echo "MACOSX_DEPLOYMENT_TARGET=13.0" >> $GITHUB_ENV
 
       - name: Build wheels
