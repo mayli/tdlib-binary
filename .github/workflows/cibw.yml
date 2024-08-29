@@ -61,6 +61,11 @@ jobs:
           run |
           echo "MACOSX_DEPLOYMENT_TARGET=14.0" >> $GITHUB_ENV
 
+      - name: Setup macos-13
+        if: runner.name == 'macos-13'
+          run |
+          echo "MACOSX_DEPLOYMENT_TARGET=13.0" >> $GITHUB_ENV
+
       - name: Build wheels
         uses: pypa/cibuildwheel@v2.20.0
         env:
