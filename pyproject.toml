@@ -18,10 +18,10 @@ before-all = [
   "cmake --build build --target tdjson",
 ]
 [tool.cibuildwheel.windows]
-environment = { CMAKE_C_COMPILER_LAUNCHER="sccache", CMAKE_CXX_COMPILER_LAUNCHER="sccache", SCCACHE_GHA_ENABLED="true", CMAKE_BUILD_TYPE="Release", CMAKE_TOOLCHAIN_FILE="D:/a/tdlib-binary/tdlib-binary/vcpkg/scripts/buildsystems/vcpkg.cmake"}
+environment = { CMAKE_C_COMPILER_LAUNCHER="sccache", CMAKE_CXX_COMPILER_LAUNCHER="sccache", SCCACHE_GHA_ENABLED="true", CMAKE_BUILD_TYPE="Release"}
 before-all = [
   "vcpkg integrate install",
-  "cmake -S tdlight -B build ",
+  "cmake -S tdlight -B build -DCMAKE_TOOLCHAIN_FILE=D:/a/tdlib-binary/tdlib-binary/vcpkg/scripts/buildsystems/vcpkg.cmake",
   "cmake --build build --target tdjson",
 ]
 [tool.cibuildwheel.macos]
