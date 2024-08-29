@@ -43,24 +43,24 @@ jobs:
           choco install -y gperf
           # Optional: update PATH for tools installed by Chocolatey
           echo "##vso[task.prependpath]C:\\ProgramData\\chocolatey\\bin"
-          # Install vcpkg
-          git clone https://github.com/microsoft/vcpkg.git
-          cd vcpkg
-          ./bootstrap-vcpkg.bat
+          # # Install vcpkg
+          # git clone https://github.com/microsoft/vcpkg.git
+          # cd vcpkg
+          # ./bootstrap-vcpkg.bat
 
-          # Install zlib using vcpkg
-          ./vcpkg install zlib
-          echo "set(CMAKE_TOOLCHAIN_FILE=$GITHUB_WORKSPACE/vcpkg/scripts/buildsystems/vcpkg.cmake)" >> $GITHUB_ENV
+          # # Install zlib using vcpkg
+          # ./vcpkg install zlib
+          # echo "set(CMAKE_TOOLCHAIN_FILE=$GITHUB_WORKSPACE/vcpkg/scripts/buildsystems/vcpkg.cmake)" >> $GITHUB_ENV
 
-          # - name: vcpkg build
-          #   if: runner.os == 'Windows'
-          #   uses: johnwason/vcpkg-action@v6
-          #   id: vcpkg
-          #   with:
-          #     pkgs: zlib
-          #     triplet: x64-windows-release
-          #     token: ${{ github.token }}
-          #     github-binarycache: true
+       - name: vcpkg build
+         if: runner.os == 'Windows'
+         uses: johnwason/vcpkg-action@v6
+         id: vcpkg
+         with:
+           pkgs: zlib
+           triplet: x64-windows-release
+           token: ${{ github.token }}
+           github-binarycache: true
       - name: test windows build
         if: runner.os == 'Windows'
         shell: pwsh
