@@ -1,7 +1,10 @@
-import importlib.resources
+try:
+    from importlib import resources
+except ImportError:
+    import importlib_resources as resources
 
 def _get_tdjson_lib_path() -> str:
 
     lib_name = "libtdjson.so"
 
-    return str(importlib.resources.files("tdlib").joinpath(lib_name))
+    return str(resources.files("tdlib").joinpath(lib_name))

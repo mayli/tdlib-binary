@@ -60,4 +60,7 @@ setup(
     package_data={
         "tdlib": ["tdjson.*"],
     },
+    requires=[
+        {'<3.9': ["importlib-resources"]}
+    ]
 )
