@@ -6,7 +6,7 @@ build-backend = "setuptools.build_meta"
 environment = { CMAKE_C_COMPILER_LAUNCHER="sccache", CMAKE_CXX_COMPILER_LAUNCHER="sccache", SCCACHE_GHA_ENABLED="true", CMAKE_GENERATOR="Ninja"}
 # Run the package tests using `pytest`
 test-command = "python {package}/tests/client_test.py"
-before-build = ["cmake --install build/ --prefix tdlib/ --component tdjson", "find tdlib"]
+before-build = ["cmake --install build/ --prefix tdlib/ --strip || true"]
 
 [tool.cibuildwheel.linux]
 environment-pass = ["ACTIONS_CACHE_URL", "ACTIONS_RUNTIME_TOKEN"]
