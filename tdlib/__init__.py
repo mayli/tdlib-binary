@@ -1,6 +1,7 @@
 try:
     from importlib import resources
-except ImportError:
+    resources.files
+except (ImportError, AttributeError):
     import importlib_resources as resources
 
 def _get_tdjson_lib_path() -> str:
