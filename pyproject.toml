@@ -19,6 +19,7 @@ before-all = [
 ]
 [tool.cibuildwheel.windows]
 before-all = [
+  "dir vcpkg/scripts/buildsystems/",
   "cmake -DCMAKE_BUILD_TYPE=Release -DCMAKE_TOOLCHAIN_FILE=vcpkg/scripts/buildsystems/vcpkg.cmake -S tdlight -B build ",
   "cmake --build build --target tdjson",
 ]
