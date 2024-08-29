@@ -58,10 +58,10 @@ jobs:
         with:
           runVcpkgInstall: true
 
-      - name: Set up windows - gperf
+      - name: Set up windows - cmake
         if: runner.os == 'Windows'
         run: |
-          cmake -DCMAKE_TOOLCHAIN_FILE=${{ github.workspace }}/vcpkg/scripts/buildsystems/vcpkg.cmake -S tdlight -B build
+          cmake -G Ninja -DCMAKE_TOOLCHAIN_FILE=${{ github.workspace }}/vcpkg/scripts/buildsystems/vcpkg.cmake -S tdlight -B build
 
       - name: Setup macos
         if: runner.os == 'macOS'
