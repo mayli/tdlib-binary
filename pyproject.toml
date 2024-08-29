@@ -11,7 +11,7 @@ before-build = "cp build/tdjson.so build/tdjson.dll build/libtdjson.dylib tdlib/
 [tool.cibuildwheel.linux]
 environment-pass = ["ACTIONS_CACHE_URL", "ACTIONS_RUNTIME_TOKEN"]
 before-all = [
-  "yum install -y gperf openssl-devel || apk add --upgrade gperf openssl-dev || apt-get install gperf libssl-dev",
+  "yum install -y gperf openssl-devel ninja-build || apk add --upgrade gperf openssl-dev || apt-get install gperf libssl-dev",
   "pip install sccache",
   "cmake -DCMAKE_BUILD_TYPE=Release -S tdlight -B build",
   "cmake --build build --target tdjson",
