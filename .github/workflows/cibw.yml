@@ -20,7 +20,7 @@ jobs:
       fail-fast: false
       matrix:
         # macos-13 is an intel runner, macos-14 is apple silicon
-        os: [ubuntu-latest, windows-latest, macos-13, macos-14]
+        os: [ubuntu-latest, windows-latest, macos-latest]
     env:
       CIBW_ARCHS_LINUX: auto64,aarch64
       CIBW_BUILD: cp37* cp39-macosx_arm64
@@ -36,13 +36,10 @@ jobs:
         with:
           submodules: recursive
 
-      - name: Run sccache-cache
-        uses: mozilla-actions/sccache-action@v0.0.5
-      - name: 
-        run: |
-          echo "SCCACHE_GHA_ENABLED=true" >> $GITHUB_ENV
-          echo "CMAKE_C_COMPILER_LAUNCHER=sccache" >> $GITHUB_ENV
-          echo "CMAKE_CXX_COMPILER_LAUNCHER=sccache" >> $GITHUB_ENV
+      - name: ccache
+        uses: hendrikmuhs/ccache-action@v1.2.11
+        with:
+          key: ${{ github.job }}-${{ matrix.os }}
 
       - name: Set up windows - gperf
         if: runner.os == 'Windows'
@@ -72,6 +69,7 @@ jobs:
         uses: pypa/cibuildwheel@v2.20.0
         env:
           CIBW_BUILD_VERBOSITY: 1
+          CIBW_ENVIRONMENT_LINUX: PATH=/usr/local/bin:/usr/lib/ccache:$PATH CCACHE_DIR=/host${{ github.workspace }}/.ccache CCACHE_CONFIGPATH=/host/home/runner/.config/ccache/ccache.conf
         with:
           only: ${{ matrix.only }}
 
