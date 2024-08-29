@@ -10,7 +10,7 @@ test-command = "python {package}/tests/client_test.py"
 before-build = ["cmake --install build/ --prefix tdlib/ --strip || true"]
 
 [tool.cibuildwheel.linux]
-environment-pass = ["SCCACHE_GHA_ENABLED", "ACTIONS_CACHE_URL", "ACTIONS_RUNTIME_TOKEN"]
+environment-pass = ["SCCACHE_GHA_ENABLED", "ACTIONS_CACHE_URL", "ACTIONS_RUNTIME_TOKEN", "SCCACHE_DIR"]
 before-all = [
   "yum install -y gperf openssl-devel ninja-build || apk add --upgrade gperf openssl-dev || apt-get install gperf libssl-dev",
   "pip install sccache",

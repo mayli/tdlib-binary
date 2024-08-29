@@ -7,9 +7,6 @@ from setuptools import Extension, setup
 from setuptools.command.build_ext import build_ext as build_ext_orig
 from wheel.bdist_wheel import bdist_wheel
 
-EXTRA = "-DCMAKE_TOOLCHAIN_FILE=%s/vcpkg/scripts/buildsystems/vcpkg.cmake" % os.getcwd()
-
-
 def get_version():
     # project(TDLib VERSION 1.8.35 LANGUAGES CXX C)
     with open("tdlight/CMakeLists.txt") as fd:
@@ -17,6 +14,7 @@ def get_version():
             if line.startswith("project(TDLib VERSION"):
                 return line.split()[2]
     return "0.0.1"
+VERSION = get_version()
 
 
 class bdist_wheel_abi3(bdist_wheel):
@@ -32,12 +30,10 @@ class bdist_wheel_abi3(bdist_wheel):
 
 class build_ext(build_ext_orig):
     def run(self):
-        for f in Path('tdlib/lib/').glob('*'):
-            if f.is_symlink():
-                # readink Added in version 3.9.
-                src = Path('tdlib/lib/') / os.readlink(f)
+        for f in (Path(self.build_lib)/'tdlib/lib').glob('*'):
+            if VERSION in str(f):
+                print('unlink', f)
                 f.unlink()
-                src.rename(f)
 
 
 def read_readme():
