@@ -34,6 +34,7 @@ class build_ext(build_ext_orig):
     def run(self):
         for f in Path('tdlib/lib/').glob('*'):
             if f.is_symlink():
+                # readink Added in version 3.9.
                 src = Path(os.readlink(f))
                 f.unlink()
                 src.rename(f)
