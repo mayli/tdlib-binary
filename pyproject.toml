@@ -4,7 +4,7 @@ build-backend = "setuptools.build_meta"
 
 [tool.cibuildwheel]
 manylinux-aarch64-image = "manylinux_2_28"
-environment = { CMAKE_C_COMPILER_LAUNCHER="sccache", CMAKE_CXX_COMPILER_LAUNCHER="sccache", SCCACHE_GHA_ENABLED="true", CMAKE_GENERATOR="Ninja"}
+environment = { CMAKE_C_COMPILER_LAUNCHER="sccache", CMAKE_CXX_COMPILER_LAUNCHER="sccache", SCCACHE_GHA_ENABLED="true", CMAKE_GENERATOR="Ninja", CMAKE_BUILD_TYPE="Release"}
 # Run the package tests using `pytest`
 test-command = "python {package}/tests/client_test.py"
 before-build = ["cmake --install build/ --prefix tdlib/ --strip || true"]
@@ -14,17 +14,18 @@ environment-pass = ["ACTIONS_CACHE_URL", "ACTIONS_RUNTIME_TOKEN"]
 before-all = [
   "yum install -y gperf openssl-devel ninja-build || apk add --upgrade gperf openssl-dev || apt-get install gperf libssl-dev",
   "pip install sccache",
-  "cmake -DCMAKE_BUILD_TYPE=Release -S tdlight -B build",
+  "cmake -S tdlight -B build",
   "cmake --build build --target tdjson",
 ]
 [tool.cibuildwheel.windows]
+environment = { CMAKE_C_COMPILER_LAUNCHER="sccache", CMAKE_CXX_COMPILER_LAUNCHER="sccache", SCCACHE_GHA_ENABLED="true", CMAKE_BUILD_TYPE="Release"}
 before-all = [
   "vcpkg integrate install",
-  "cmake -DCMAKE_BUILD_TYPE=Release -DCMAKE_TOOLCHAIN_FILE=vcpkg/scripts/buildsystems/vcpkg.cmake -S tdlight -B build ",
+  "cmake -S tdlight -B build ",
   "cmake --build build --target tdjson",
 ]
 [tool.cibuildwheel.macos]
 before-all = [
-  "cmake -DCMAKE_BUILD_TYPE=Release -S tdlight -B build",
+  "cmake -S tdlight -B build",
   "cmake --build build --target tdjson",
 ]
