@@ -56,7 +56,7 @@ jobs:
           cp CMakePresets.json tdlight/
 
       - name: build with cmake
-        uses: lukka/run-cmake@v3
+        uses: lukka/run-cmake@v10
         if: runner.os == 'Windows'
         with:
           cmakeListsTxtPath: '${{ github.workspace }}/tdlight/CMakeLists.txt'
