@@ -36,6 +36,10 @@ jobs:
         with:
           submodules: recursive
 
+      - name: Copy files
+        run: |
+          cp CMakePresets.json tdlight/
+
       - name: Run sccache-cache
         uses: mozilla-actions/sccache-action@v0.0.5
       - name: 
@@ -56,10 +60,6 @@ jobs:
         uses: lukka/run-vcpkg@v11
         with:
           vcpkgJsonGlob: 'vcpkg.json'
-
-      - name: Copy files
-        run: |
-          cp CMakePresets.json tdlight/
 
       - name: Run CMake+vcpkg+Ninja+CTest to build packages and generate/build the code.
         uses: lukka/run-cmake@v10
