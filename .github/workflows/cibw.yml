@@ -59,7 +59,10 @@ jobs:
         if: runner.os == 'Windows'
         shell: pwsh
         run: |
-          cmake ${{ steps.vcpkg.outputs.vcpkg-cmake-config }} -S tdlight -B build -DCMAKE_BUILD_TYPE=Release
+          md build
+          cd build
+          cmake ${{ steps.vcpkg.outputs.vcpkg-cmake-config }} -DCMAKE_BUILD_TYPE=Release ../tdlight
+          cmake -j $(nproc) --target tdjson
 
       # - name: Setup PHP
       #   id: setup-php
