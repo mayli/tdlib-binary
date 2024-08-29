@@ -52,10 +52,14 @@ jobs:
       - uses: lukka/get-cmake@latest
 
       - name: Restore from cache and setup vcpkg executable and data files.
-        if: runner.os == 'Windows'
+        # if: runner.os == 'Windows'
         uses: lukka/run-vcpkg@v11
         with:
           vcpkgJsonGlob: 'vcpkg.json'
+
+      - name: Copy files
+        run: |
+          cp CMakePresets.json tdlight/
 
       - name: Run CMake+vcpkg+Ninja+CTest to build packages and generate/build the code.
         uses: lukka/run-cmake@v10
@@ -65,7 +69,7 @@ jobs:
           buildPreset: 'ninja-vcpkg-release'
 
       - name: run cmake - windows
-        if: runner.os == 'Windows'
+        # if: runner.os == 'Windows'
         run: |
           cmake --preset ninja-multi-vcpkg -S tdlight -B build
 
