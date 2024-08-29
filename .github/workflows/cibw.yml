@@ -38,6 +38,8 @@ jobs:
 
       - name: ccache
         uses: hendrikmuhs/ccache-action@v1.2
+        with:
+          create-symlink: true
 
       - name: Set up windows - gperf
         if: runner.os == 'Windows'
@@ -62,7 +64,6 @@ jobs:
           cmakeListsTxtPath: '${{ github.workspace }}/tdlight/CMakeLists.txt'
           configurePreset: 'release-vcpkg'
           buildPreset: 'release-vcpkg'
-          cmakeAppendedArgs: '-D CMAKE_C_COMPILER_LAUNCHER=ccache -D CMAKE_CXX_COMPILER_LAUNCHER=ccache'
 
       - name: Build wheels
         uses: pypa/cibuildwheel@v2.20.0
