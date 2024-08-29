@@ -20,7 +20,8 @@ jobs:
       fail-fast: false
       matrix:
         # macos-13 is an intel runner, macos-14 is apple silicon
-        os: [ubuntu-latest, windows-latest, macos-13, macos-14]
+        # os: [ubuntu-latest, windows-latest, macos-13, macos-14]
+        os: [windows-latest]
     env:
       CIBW_ARCHS_LINUX: auto64,aarch64
       CIBW_BUILD: cp37* cp39-macosx_arm64
@@ -61,7 +62,7 @@ jobs:
         with:
           vcpkgJsonGlob: 'vcpkg.json'
 
-      - name: Run CMake+vcpkg+Ninja+CTest to build packages and generate/build the code.
+      - name: Run CMake+vcpkg+Ninja to build packages and generate/build the code.
         uses: lukka/run-cmake@v10
         with:
           cmakeListsTxtPath: '${{ github.workspace }}/tdlight/CMakeLists.txt'
