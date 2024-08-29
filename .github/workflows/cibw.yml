@@ -30,6 +30,11 @@ jobs:
         uses: docker/setup-qemu-action@v1
         with:
           platforms: arm64
+
+      - uses: actions/checkout@v4
+        with:
+          submodules: recursive
+
       - name: Set up windows
         if: runner.os == 'Windows'
         shell: pwsh
@@ -46,6 +51,7 @@ jobs:
           # # Install zlib using vcpkg
           # ./vcpkg install zlib
           # echo "set(CMAKE_TOOLCHAIN_FILE=$GITHUB_WORKSPACE/vcpkg/scripts/buildsystems/vcpkg.cmake)" >> $GITHUB_ENV
+
       - name: vcpkg build
         if: runner.os == 'Windows'
         uses: johnwason/vcpkg-action@v6
@@ -59,6 +65,7 @@ jobs:
         if: runner.os == 'Windows'
         shell: pwsh
         run: |
+          dir
           md build
           cd build
           cmake ${{ steps.vcpkg.outputs.vcpkg-cmake-config }} -DCMAKE_BUILD_TYPE=Release ../tdlight
@@ -70,9 +77,6 @@ jobs:
       # - name: Split sources
       #   run: cd tdlight && php SplitSource.php
       
-      - uses: actions/checkout@v4
-        with:
-          submodules: recursive
 
 
       - name: Build wheels
